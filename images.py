@@ -1,5 +1,5 @@
 import cv2
-
+import os
 
 #img = cv2.imread('/Users/danielruizmayo/image-ml/images/bat-11.gif',0)
 img = cv2.imread('apple-15.jpg',0)
@@ -28,8 +28,23 @@ print(dst)
 
 fast = cv2.FastFeatureDetector_create()
 kp = fast.detect(img,None)
+print(type(kp))
 print(len(kp))
+print(type(kp[1]))
+print((kp[1]))
 
-img3 = cv2.drawKeypoints(img, kp, None, color=(255,0,0))
-cv2.imwrite('fast_false.png',img3)
+sift = cv2.xfeatures2d.SIFT_create()
 
+kp1, des1 = sift.detectAndCompute(img,None)
+print("# kps: {}, descriptors: {}".format(len(kp1), des1.shape))
+
+'''
+for filename in os.listdir('jpges'):
+    clas=filename.split('-')[0]
+    print(clas)
+'''
+#img3 = cv2.drawKeypoints(img, kp, None, color=(255,0,0))
+#cv2.imwrite('fast_false.png',img3)
+
+#img4 = cv2.drawKeypoints(img, kp1, None, color=(255,0,0))
+#cv2.imwrite('sift.png',img4)
