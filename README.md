@@ -8,8 +8,4 @@ sips -s format jpeg images/*.gif --out jpges
 and it worked
 
 
-contours, retrival mode: RETR_EXTERNAL 	
-retrieves only the extreme outer contours. It sets hierarchy[i][2]=hierarchy[i][3]=-1 for all the contours
-ContourApproximationModes:
-CHAIN_APPROX_NONE 	
-stores absolutely all the contour points. That is, any 2 subsequent points (x1,y1) and (x2,y2) of the contour will be either horizontal, vertical or diagonal neighbors, that is, max(abs(x1-x2),abs(y2-y1))==1.
+For execute predict_images.py you could use 0 or 1 parameter, by default it will predict apple-15, but you can pass through the parameter the complete path of the image you want to predict(you have to execute it in the same path of apple-15)

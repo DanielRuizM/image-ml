@@ -1,6 +1,8 @@
 import cv2
 import os
 
+print(cv2.getBuildInformation())
+
 
 #img = cv2.imread('/Users/danielruizmayo/image-ml/images/bat-11.gif',0)
 img_prediction = cv2.imread('apple-15.jpg',0)
@@ -71,9 +73,9 @@ for filename in os.listdir('jpges'):
         continue
     img_train = cv2.imread('jpges/'+filename,0)
     kp_train, des_train = sift.detectAndCompute(img_train,None)
-    #matches = bf.knnMatch(des_predict,des_train, k=2)
+    matches = bf.knnMatch(des_predict,des_train, k=30)
     matches = bf.match(des_predict,des_train)
-    matches = sorted(matches, key = lambda x:x.distance)
+    #matches = sorted(matches, key = lambda x:x.distance)
 
     #bloque corners
     key_points_train = fast.detect(img_train,None)
