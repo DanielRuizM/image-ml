@@ -55,6 +55,7 @@ def main():
 
     new_ranking_descriptor=[{'num':1000000,'class':None}]*optim_ranking_number
     new_ranking_corners=[{'num':1000000,'class':None}]*optim_ranking_number
+    print('processing...')
     for filename in os.listdir('jpges'):
         clas=filename.split('-')[0]
         if filename=='.DS_Store':
@@ -62,7 +63,7 @@ def main():
         img_train = cv2.imread('jpges/'+filename,0)
         kp_train, des_train = sift.detectAndCompute(img_train,None)
 
-        matches = bf.knnMatch(des_predict,des_train, k=30)
+        #matches = bf.knnMatch(des_predict,des_train, k=30)
         matches = bf.match(des_predict,des_train)
         #matches = sorted(matches, key = lambda x:x.distance)
 
@@ -96,6 +97,7 @@ def main():
             classes[new_ranking_corners[pos]['class']]=classes[new_ranking_corners[pos]['class']]+1*optim_ranking_number-pos
         else:
             classes[new_ranking_corners[pos]['class']]=1*optim_ranking_number-pos
+    print(new_ranking_descriptor)
     max=-1
     #Get the predicted class
     predicted_key=''
