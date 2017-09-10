@@ -2,9 +2,8 @@ import cv2
 import os
 
 #img = cv2.imread('/Users/danielruizmayo/image-ml/images/bat-11.gif',0)
-img_prediction = cv2.imread('apple-15.jpg',0)
 img = cv2.imread('apple-15.jpg',0)
-img2 = cv2.imread('apple-9.jpg',0)
+img2 = cv2.imread('apple-19.jpg',0)
 #print(img)
 #i dont need threshold(is right now black and white)
 _,contours,hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
@@ -30,8 +29,6 @@ dst = cv2.cornerHarris(img,2,3,0.04)
 
 fast = cv2.FastFeatureDetector_create()
 kp = fast.detect(img,None)
-key_points_pred = fast.detect(img_prediction,None)
-
 #print(type(kp))
 #print(len(kp))
 #print(type(kp[1]))
@@ -39,27 +36,37 @@ key_points_pred = fast.detect(img_prediction,None)
 
 sift = cv2.xfeatures2d.SIFT_create()
 
-kp_predict, des_predict = sift.detectAndCompute(img,None)
-
 kp1, des1 = sift.detectAndCompute(img,None)
 kp2, des2 = sift.detectAndCompute(img2,None)
 
 # BFMatcher with default params
-bf = cv2.BFMatcher()
-matches = bf.knnMatch(des1,des2, k=2)
+#bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+bf = cv2.BFMatcher(crossCheck=True)
+
+matches = bf.match(des1,des2)
 #matches2 = bf.knnMatch(des1,des2)
 
 print(len(matches))
+'''
 good = []
 for m,n in matches:
     if m.distance < 0.75*n.distance:
         good.append([m])
-img3 = cv2.drawMatchesKnn(img,kp1,img2,kp2,good,None,flags=2)
+'''
+#img3 = cv2.drawMatchesKnn(img,kp1,img2,kp2,matches,None,flags=2)
+# Sort them in the order of their distance.
+matches = sorted(matches, key = lambda x:x.distance)
+
+# Draw first 10 matches.
+img3 = cv2.drawMatches(img,kp1,img2,kp2,matches[:10],None, flags=2)
+
+#img3 = cv2.drawKeypoints(img, kp, None, color=(255,0,0))
+cv2.imwrite('matches.png',img3)
 
 #print(len(matches2))
 
 #print("# kps: {}, descriptors: {}".format(len(kp1), des1.shape))
-
+'''
 min=100000000000
 min_diff=100000000000
 file_diff=''
@@ -95,10 +102,9 @@ for filename in os.listdir('jpges'):
         file_diff=filename
 print(file_min+' su suma es: '+str(min))
 print(file_diff+' su diff es: '+str(diff))
+'''
 
 
-#img3 = cv2.drawKeypoints(img, kp, None, color=(255,0,0))
-#cv2.imwrite('fast_false.png',img3)
 
 #img4 = cv2.drawKeypoints(img, kp1, None, color=(255,0,0))
 #cv2.imwrite('sift.png',img4)
